@@ -794,13 +794,27 @@ public class Utils {
       } catch (InterruptedException e) {
         // ignore the interruption and check the exit value to be sure
       }
-      if (process.exitValue() != 0) {
+      if (process.exitValue() != 0 && !Utils.preAllocateFileByTruncate(file, capacityBytes)) {
         throw new IOException(
             "error while trying to preallocate file " + file.getAbsolutePath() + " exitvalue " + process.exitValue()
                 + " error string " + new BufferedReader(new InputStreamReader(process.getErrorStream())).lines()
                 .collect(Collectors.joining("/n")));
       }
     }
+  }
+
+  private static boolean preAllocateFileByTruncate(File file, long capacityBytes) throws IOException { 
+    if (!isLinux()) {
+        return false; 
+    }
+    Runtime runtime = Runtime.getRuntime();
+    Process process = runtime.exec("truncate -s " + capacityBytes + " " + file.getAbsolutePath());
+    try {
+      process.waitFor();
+    } catch (InterruptedException e) {
+      // ignore the interruption and check the exit value to be sure
+    }
+    return process.exitValue() == 0;
   }
 
   /**

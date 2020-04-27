@@ -49,6 +49,7 @@ import org.apache.helix.spectator.RoutingTableSnapshot;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -65,6 +66,7 @@ import static org.junit.Assume.*;
  * Tests the {@link HelixClusterManager} directly and also via the {@link CompositeClusterManager}.
  */
 @RunWith(Parameterized.class)
+@Ignore
 public class HelixClusterManagerTest {
   static final long CURRENT_XID = 64;
   static final String clusterNamePrefixInHelix = "Ambry-";
